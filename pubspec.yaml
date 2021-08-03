@@ -1,0 +1,34 @@
+name: zoo_noises
+description: A new Flutter project.
+
+publish_to: 'none' 
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  audioplayers: ^0.19.1
+  cupertino_icons: ^1.0.2
+  home_indicator: ^2.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  assets:
+    - images/bear.jpeg
+    - images/antelope.jpeg
+    - images/anteater.jpeg
+    - images/lion.jpeg
+    - images/tiger.jpeg
+    - audio/bear.mp3
+    - audio/anteater.mp3
+    - audio/antelope.mp3
+    - audio/lion.mp3
+    - audio/tiger.mp3
