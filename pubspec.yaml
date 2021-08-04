@@ -22,13 +22,67 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - images/bear.jpeg
-    - images/antelope.jpeg
+    # IMAGES
     - images/anteater.jpeg
+    - images/antelope.jpeg
+    - images/bear.jpeg
+    # - images/beluga.jpeg
+    # - images/camel.jpeg
+    # - images/cat.jpeg
+    # - images/cougar.jpeg
+    # - images/dog.jpeg
+    # - images/dolphin.jpeg
+    # - images/eagle.jpeg
+    # - images/elephant.jpeg
+    # - images/falcon.jpeg
+    # - images/frog.jpeg
+    # - images/gorilla.jpeg
+    # - images/hippo.jpeg
+    # - images/horse.jpeg
+    # - images/iguana.jpeg
+    # - images/jaguar.jpeg
+    # - images/leopard.jpeg
     - images/lion.jpeg
+    # - images/moose.jpeg
+    # - images/orca.jpeg
+    # - images/penguin.jpeg
+    # - images/pig.jpeg
+    # - images/raccoon.jpeg
+    # - images/sea-lion.jpeg
+    # - images/seal.jpeg
     - images/tiger.jpeg
-    - audio/bear.mp3
+    # - images/turkey.jpeg
+    # - images/wolf.jpeg
+    # - images/zebra.jpeg
+    # AUDIO
     - audio/anteater.mp3
     - audio/antelope.mp3
+    - audio/bear.mp3
+    - audio/beluga.mp3
+    - audio/camel.mp3
+    - audio/cat.mp3
+    - audio/cougar.mp3
+    - audio/dog.mp3
+    - audio/dolphin.mp3
+    - audio/eagle.mp3
+    - audio/elephant.mp3
+    - audio/falcon.mp3
+    - audio/frog.mp3
+    - audio/gorilla.mp3
+    - audio/hippo.mp3
+    - audio/horse.mp3
+    - audio/iguana.mp3
+    - audio/jaguar.mp3
+    - audio/leopard.mp3
     - audio/lion.mp3
+    - audio/moose.mp3
+    - audio/orca.mp3
+    - audio/penguin.mp3
+    - audio/pig.mp3
+    - audio/raccoon.mp3
+    - audio/sea-lion.mp3
+    - audio/seal.mp3
     - audio/tiger.mp3
+    - audio/turkey.mp3
+    - audio/wolf.mp3
+    - audio/zebra.mp3
