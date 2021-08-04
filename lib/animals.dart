@@ -9,8 +9,13 @@ class Animals {
       Animal(name: 'anteater'),
       Animal(name: 'antelope'),
       Animal(name: 'bear'),
+      Animal(name: 'iguana'),
       Animal(name: 'lion'),
+      Animal(name: 'moose'),
       Animal(name: 'tiger'),
+      Animal(name: 'turkey'),
+      Animal(name: 'wolf'),
+      Animal(name: 'zebra'),
     ];
   }
 

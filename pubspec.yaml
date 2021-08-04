@@ -39,11 +39,11 @@ flutter:
     # - images/gorilla.jpeg
     # - images/hippo.jpeg
     # - images/horse.jpeg
-    # - images/iguana.jpeg
+    - images/iguana.jpeg
     # - images/jaguar.jpeg
     # - images/leopard.jpeg
     - images/lion.jpeg
-    # - images/moose.jpeg
+    - images/moose.jpeg
     # - images/orca.jpeg
     # - images/penguin.jpeg
     # - images/pig.jpeg
@@ -51,9 +51,9 @@ flutter:
     # - images/sea-lion.jpeg
     # - images/seal.jpeg
     - images/tiger.jpeg
-    # - images/turkey.jpeg
-    # - images/wolf.jpeg
-    # - images/zebra.jpeg
+    - images/turkey.jpeg
+    - images/wolf.jpeg
+    - images/zebra.jpeg
     # AUDIO
     - audio/anteater.mp3
     - audio/antelope.mp3
