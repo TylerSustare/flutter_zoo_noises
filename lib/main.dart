@@ -8,32 +8,82 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  String _title = 'Zoo Noises';
+  MaterialColor _color = getColor();
+  List<Animal> _animals = Animals.getAnimals();
+
   @override
   Widget build(BuildContext context) {
     HomeIndicator.deferScreenEdges([ScreenEdge.bottom]);
     return MaterialApp(
-      title: 'Zoo Noises',
-      theme: ThemeData(primarySwatch: getColor()),
-      home: HomePage(title: 'Zoo Noises'),
+      debugShowCheckedModeBanner: false,
+      title: _title,
+      theme: ThemeData(primarySwatch: _color),
+      home: HomePage(
+        animals: _animals,
+        color: _color,
+        resetAnimals: () => setState(() => _animals = Animals.getAnimals()),
+        setAnimals: () => setState(() => _animals = Animals.getRandomAnimals()),
+        setColor: () => setState(() => _color = getColor(_color)),
+        title: _title,
+      ),
     );
   }
 }
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key, required this.title}) : super(key: key);
+  const HomePage({
+    Key? key,
+    required this.animals,
+    required this.color,
+    required this.resetAnimals,
+    required this.setAnimals,
+    required this.setColor,
+    required this.title,
+  }) : super(key: key);
 
+  final List<Animal> animals;
+  final MaterialColor color;
+  final void Function() resetAnimals;
+  final void Function() setAnimals;
+  final void Function() setColor;
   final String title;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(title)),
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: Icon(Icons.sort_by_alpha),
+            onPressed: resetAnimals,
+          ),
+          IconButton(
+            icon: Icon(Icons.shuffle),
+            onPressed: setAnimals,
+          ),
+        ],
+        leading: IconButton(
+          icon: Icon(Icons.color_lens),
+          onPressed: setColor,
+        ),
+        title: GestureDetector(
+          child: Text(title),
+          onTap: () {},
+        ),
+        centerTitle: true,
+      ),
       body: Center(
         child: ListView.builder(
-          itemCount: Animals.spoon.length,
+          itemCount: animals.length,
           itemBuilder: (BuildContext context, int index) {
-            String animalName = Animals.spoon[index].name;
+            String animalName = animals[index].name;
             return Column(
               children: [
                 ListTile(
@@ -42,11 +92,11 @@ class HomePage extends StatelessWidget {
                 ),
                 InkWell(
                   child: Image(image: AssetImage('images/$animalName.jpeg')),
-                  onTap: () async {
-                    await AudioPlayer().play(
-                      'audio/$animalName.mp3',
-                      isLocal: true,
-                    );
+                  onTap: () {
+                    AudioPlayer().play('audio/$animalName.mp3', isLocal: true);
+                  },
+                  onDoubleTap: () {
+                    AudioPlayer().play('audio/$animalName.mp3', isLocal: true);
                   },
                 )
               ],

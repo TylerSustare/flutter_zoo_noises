@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 List<MaterialColor> colors = [
@@ -10,9 +9,14 @@ List<MaterialColor> colors = [
   Colors.blue,
   Colors.purple,
   Colors.pink,
-  Colors.cyan
+  Colors.cyan,
+  Colors.teal,
 ];
 
-MaterialColor getColor() {
-  return colors[Random().nextInt(colors.length)];
+MaterialColor getColor([MaterialColor currentColor = Colors.teal]) {
+  var color = colors[Random().nextInt(colors.length)];
+  while (currentColor == color) {
+    color = colors[Random().nextInt(colors.length)];
+  }
+  return color;
 }
