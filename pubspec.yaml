@@ -27,29 +27,30 @@ flutter:
     - images/antelope.jpeg
     - images/bear.jpeg
     # - images/beluga.jpeg
-    # - images/camel.jpeg
-    # - images/cat.jpeg
-    # - images/cougar.jpeg
-    # - images/dog.jpeg
-    # - images/dolphin.jpeg
-    # - images/eagle.jpeg
-    # - images/elephant.jpeg
-    # - images/falcon.jpeg
-    # - images/frog.jpeg
-    # - images/gorilla.jpeg
-    # - images/hippo.jpeg
+    - images/camel.jpeg
+    - images/cat.jpeg
+    - images/cougar.jpeg
+    - images/dog.jpeg
+    - images/dolphin.jpeg
+    - images/eagle.jpeg
+    - images/elephant.jpeg
+    - images/falcon.jpeg
+    - images/frog.jpeg
+    - images/gorilla.jpeg
+    - images/hippo.jpeg
     # - images/horse.jpeg
     - images/iguana.jpeg
-    # - images/jaguar.jpeg
-    # - images/leopard.jpeg
+    - images/jaguar.jpeg
+    - images/lamb.jpeg
+    - images/leopard.jpeg
     - images/lion.jpeg
     - images/moose.jpeg
-    # - images/orca.jpeg
-    # - images/penguin.jpeg
+    - images/orca.jpeg
+    - images/penguin.jpeg
     # - images/pig.jpeg
-    # - images/raccoon.jpeg
-    # - images/sea-lion.jpeg
-    # - images/seal.jpeg
+    - images/raccoon.jpeg
+    - images/sea-lion.jpeg
+    - images/seal.jpeg
     - images/tiger.jpeg
     - images/turkey.jpeg
     - images/wolf.jpeg
@@ -73,6 +74,7 @@ flutter:
     - audio/horse.mp3
     - audio/iguana.mp3
     - audio/jaguar.mp3
+    - audio/lamb.mp3
     - audio/leopard.mp3
     - audio/lion.mp3
     - audio/moose.mp3
