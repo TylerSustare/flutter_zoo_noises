@@ -1,7 +1,7 @@
 name: zoo_noises
 description: A new Flutter project.
 
-publish_to: 'none' 
+publish_to: "none"
 
 version: 1.0.0+1
 
@@ -23,68 +23,75 @@ flutter:
   uses-material-design: true
   assets:
     # IMAGES
-    - images/anteater.jpeg
-    - images/antelope.jpeg
-    - images/bear.jpeg
-    # - images/beluga.jpeg
-    - images/camel.jpeg
-    - images/cat.jpeg
-    - images/cougar.jpeg
-    - images/dog.jpeg
-    - images/dolphin.jpeg
-    - images/eagle.jpeg
-    - images/elephant.jpeg
-    - images/falcon.jpeg
-    - images/frog.jpeg
-    - images/gorilla.jpeg
-    - images/hippo.jpeg
-    # - images/horse.jpeg
-    - images/iguana.jpeg
-    - images/jaguar.jpeg
-    - images/lamb.jpeg
-    - images/leopard.jpeg
-    - images/lion.jpeg
-    - images/moose.jpeg
-    - images/orca.jpeg
-    - images/penguin.jpeg
-    # - images/pig.jpeg
-    - images/raccoon.jpeg
-    - images/sea-lion.jpeg
-    - images/seal.jpeg
-    - images/tiger.jpeg
-    - images/turkey.jpeg
-    - images/wolf.jpeg
-    - images/zebra.jpeg
-    # AUDIO
-    - audio/anteater.mp3
-    - audio/antelope.mp3
-    - audio/bear.mp3
-    - audio/beluga.mp3
-    - audio/camel.mp3
-    - audio/cat.mp3
-    - audio/cougar.mp3
-    - audio/dog.mp3
-    - audio/dolphin.mp3
-    - audio/eagle.mp3
-    - audio/elephant.mp3
-    - audio/falcon.mp3
-    - audio/frog.mp3
-    - audio/gorilla.mp3
-    - audio/hippo.mp3
-    - audio/horse.mp3
-    - audio/iguana.mp3
-    - audio/jaguar.mp3
-    - audio/lamb.mp3
-    - audio/leopard.mp3
-    - audio/lion.mp3
-    - audio/moose.mp3
-    - audio/orca.mp3
-    - audio/penguin.mp3
-    - audio/pig.mp3
-    - audio/raccoon.mp3
-    - audio/sea-lion.mp3
-    - audio/seal.mp3
-    - audio/tiger.mp3
-    - audio/turkey.mp3
-    - audio/wolf.mp3
-    - audio/zebra.mp3
+    - assets/images/anteater.jpeg
+    - assets/images/antelope.jpeg
+    - assets/images/bear.jpeg
+    # - assets/images/beluga.jpeg
+    - assets/images/camel.jpeg
+    - assets/images/cat.jpeg
+    - assets/images/cougar.jpeg
+    - assets/images/cheetah.jpeg
+    - assets/images/dog.jpeg
+    - assets/images/dolphin.jpeg
+    - assets/images/dragon.jpeg
+    - assets/images/dragon_2.jpeg
+    - assets/images/eagle.jpeg
+    - assets/images/elephant.jpeg
+    - assets/images/falcon.jpeg
+    - assets/images/frog.jpeg
+    - assets/images/gorilla.jpeg
+    - assets/images/hippo.jpeg
+    # - assets/images/horse.jpeg
+    - assets/images/iguana.jpeg
+    - assets/images/jaguar.jpeg
+    - assets/images/lamb.jpeg
+    - assets/images/leopard.jpeg
+    - assets/images/lion.jpeg
+    - assets/images/moose.jpeg
+    - assets/images/orca.jpeg
+    - assets/images/otter.jpeg
+    - assets/images/penguin.jpeg
+    # - assets/images/pig.jpeg
+    - assets/images/raccoon.jpeg
+    - assets/images/sea-lion.jpeg
+    - assets/images/seal.jpeg
+    - assets/images/tiger.jpeg
+    - assets/images/turkey.jpeg
+    - assets/images/wolf.jpeg
+    - assets/images/zebra.jpeg
+    # assets/AUDIO
+    - assets/audio/anteater.mp3
+    - assets/audio/antelope.mp3
+    - assets/audio/bear.mp3
+    - assets/audio/beluga.mp3
+    - assets/audio/camel.mp3
+    - assets/audio/cat.mp3
+    - assets/audio/cheetah.mp3
+    - assets/audio/cougar.mp3
+    - assets/audio/dog.mp3
+    - assets/audio/dolphin.mp3
+    - assets/audio/dragon.mp3
+    - assets/audio/eagle.mp3
+    - assets/audio/elephant.mp3
+    - assets/audio/falcon.mp3
+    - assets/audio/frog.mp3
+    - assets/audio/gorilla.mp3
+    - assets/audio/hippo.mp3
+    - assets/audio/horse.mp3
+    - assets/audio/iguana.mp3
+    - assets/audio/jaguar.mp3
+    - assets/audio/lamb.mp3
+    - assets/audio/leopard.mp3
+    - assets/audio/lion.mp3
+    - assets/audio/moose.mp3
+    - assets/audio/orca.mp3
+    - assets/audio/otter.mp3
+    - assets/audio/penguin.mp3
+    - assets/audio/pig.mp3
+    - assets/audio/raccoon.mp3
+    - assets/audio/sea-lion.mp3
+    - assets/audio/seal.mp3
+    - assets/audio/tiger.mp3
+    - assets/audio/turkey.mp3
+    - assets/audio/wolf.mp3
+    - assets/audio/zebra.mp3

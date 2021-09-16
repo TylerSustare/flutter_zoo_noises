@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:home_indicator/home_indicator.dart';
 import 'package:zoo_noises/animals.dart';
@@ -29,7 +31,8 @@ class _MyAppState extends State<MyApp> {
         animals: _animals,
         color: _color,
         resetAnimals: () => setState(() => _animals = Animals.getAnimals()),
-        setAnimals: () => setState(() => _animals = Animals.getRandomAnimals()),
+        mixUpAnimals: () =>
+            setState(() => _animals = Animals.getRandomAnimals()),
         setColor: () => setState(() => _color = getColor(_color)),
         title: _title,
       ),
@@ -43,7 +46,7 @@ class HomePage extends StatelessWidget {
     required this.animals,
     required this.color,
     required this.resetAnimals,
-    required this.setAnimals,
+    required this.mixUpAnimals,
     required this.setColor,
     required this.title,
   }) : super(key: key);
@@ -51,22 +54,42 @@ class HomePage extends StatelessWidget {
   final List<Animal> animals;
   final MaterialColor color;
   final void Function() resetAnimals;
-  final void Function() setAnimals;
+  final void Function() mixUpAnimals;
   final void Function() setColor;
   final String title;
 
   @override
   Widget build(BuildContext context) {
+    void playMobileAudio({required String animalName}) {
+      if (animalName.contains('dragon')) {
+        var file = File('audio/dragon.mp3');
+        AudioCache().play(file.path);
+        return;
+      }
+      var file = File('audio/$animalName.mp3');
+      AudioCache().play(file.path);
+    }
+
+    void playAudio({required String animalName}) {
+      if (animalName.contains('dragon')) {
+        var file = File('audio/dragon.mp3');
+        AudioPlayer().play(file.path, isLocal: true);
+        return;
+      }
+      var file = File('audio/$animalName.mp3');
+      AudioPlayer().play(file.path, isLocal: true);
+    }
+
     return Scaffold(
       appBar: AppBar(
         actions: [
-          IconButton(
-            icon: Icon(Icons.sort_by_alpha),
-            onPressed: resetAnimals,
-          ),
+          // IconButton(
+          //   icon: Icon(Icons.sort_by_alpha),
+          //   onPressed: resetAnimals,
+          // ),
           IconButton(
             icon: Icon(Icons.shuffle),
-            onPressed: setAnimals,
+            onPressed: mixUpAnimals,
           ),
         ],
         leading: IconButton(
@@ -93,7 +116,10 @@ class HomePage extends StatelessWidget {
                 InkWell(
                   child: Image(image: AssetImage('images/$animalName.jpeg')),
                   onTap: () {
-                    AudioPlayer().play('audio/$animalName.mp3', isLocal: true);
+                    if (Platform.isIOS || Platform.isIOS) {
+                      return playMobileAudio(animalName: animalName);
+                    }
+                    return playAudio(animalName: animalName);
                   },
                   onDoubleTap: () {
                     AudioPlayer().play('audio/$animalName.mp3', isLocal: true);
