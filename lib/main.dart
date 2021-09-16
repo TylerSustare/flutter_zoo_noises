@@ -114,9 +114,13 @@ class HomePage extends StatelessWidget {
                   trailing: Text(animalName[0].toUpperCase()),
                 ),
                 InkWell(
-                  child: Image(image: AssetImage('images/$animalName.jpeg')),
+                  child: Image(
+                    image: Platform.isAndroid
+                        ? AssetImage('assets/images/$animalName.jpeg')
+                        : AssetImage('images/$animalName.jpeg'),
+                  ),
                   onTap: () {
-                    if (Platform.isIOS || Platform.isIOS) {
+                    if (Platform.isAndroid || Platform.isIOS) {
                       return playMobileAudio(animalName: animalName);
                     }
                     return playAudio(animalName: animalName);
