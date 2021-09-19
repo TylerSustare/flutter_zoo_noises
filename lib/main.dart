@@ -81,6 +81,13 @@ class HomePage extends StatelessWidget {
       AudioPlayer().play(file.path, isLocal: true);
     }
 
+    void play({required String animalName}) {
+      if (Platform.isAndroid || Platform.isIOS) {
+        return playMobileAudio(animalName: animalName);
+      }
+      return playAudio(animalName: animalName);
+    }
+
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -128,24 +135,9 @@ class HomePage extends StatelessWidget {
                         child: InkWell(
                           splashColor: getColor(),
                           splashFactory: InkSplash.splashFactory,
-                          onTap: () {
-                            if (Platform.isAndroid || Platform.isIOS) {
-                              return playMobileAudio(animalName: animalName);
-                            }
-                            return playAudio(animalName: animalName);
-                          },
-                          onDoubleTap: () {
-                            if (Platform.isAndroid || Platform.isIOS) {
-                              return playMobileAudio(animalName: animalName);
-                            }
-                            return playAudio(animalName: animalName);
-                          },
-                          onLongPress: () {
-                            if (Platform.isAndroid || Platform.isIOS) {
-                              return playMobileAudio(animalName: animalName);
-                            }
-                            return playAudio(animalName: animalName);
-                          },
+                          onTap: () => play(animalName: animalName),
+                          onDoubleTap: () => play(animalName: animalName),
+                          onLongPress: () => play(animalName: animalName),
                         ),
                       ),
                     )
