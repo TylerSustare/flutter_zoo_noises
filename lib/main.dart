@@ -31,8 +31,9 @@ class _MyAppState extends State<MyApp> {
         animals: _animals,
         color: _color,
         resetAnimals: () => setState(() => _animals = Animals.getAnimals()),
-        mixUpAnimals: () =>
-            setState(() => _animals = Animals.getRandomAnimals()),
+        mixUpAnimals: () => setState(
+          () => _animals = Animals.getRandomAnimals(),
+        ),
         setColor: () => setState(() => _color = getColor(_color)),
         title: _title,
       ),
@@ -102,37 +103,58 @@ class HomePage extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: Center(
-        child: ListView.builder(
-          itemCount: animals.length,
-          itemBuilder: (BuildContext context, int index) {
-            String animalName = animals[index].name;
-            return Column(
-              children: [
-                ListTile(
-                  title: Text(animalName.toUpperCase()),
-                  trailing: Text(animalName[0].toUpperCase()),
-                ),
-                InkWell(
-                  child: Image(
-                    image: Platform.isAndroid
-                        ? AssetImage('assets/images/$animalName.jpeg')
-                        : AssetImage('images/$animalName.jpeg'),
-                  ),
-                  onTap: () {
-                    if (Platform.isAndroid || Platform.isIOS) {
-                      return playMobileAudio(animalName: animalName);
-                    }
-                    return playAudio(animalName: animalName);
-                  },
-                  onDoubleTap: () {
-                    AudioPlayer().play('audio/$animalName.mp3', isLocal: true);
-                  },
-                )
-              ],
-            );
-          },
-        ),
+      body: OrientationBuilder(
+        builder: (context, orientation) {
+          return Center(
+            child: ListView.builder(
+              itemCount: animals.length,
+              itemBuilder: (BuildContext context, int index) {
+                String animalName = animals[index].name;
+                return Column(
+                  children: [
+                    ListTile(
+                      title: Text(animalName.toUpperCase()),
+                      trailing: Text(animalName[0].toUpperCase()),
+                    ),
+                    SizedBox(
+                      height: orientation == Orientation.portrait ? 220 : 300,
+                      width: double.infinity,
+                      child: Ink(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage('assets/images/$animalName.jpeg'),
+                          ),
+                        ),
+                        child: InkWell(
+                          splashColor: getColor(),
+                          splashFactory: InkSplash.splashFactory,
+                          onTap: () {
+                            if (Platform.isAndroid || Platform.isIOS) {
+                              return playMobileAudio(animalName: animalName);
+                            }
+                            return playAudio(animalName: animalName);
+                          },
+                          onDoubleTap: () {
+                            if (Platform.isAndroid || Platform.isIOS) {
+                              return playMobileAudio(animalName: animalName);
+                            }
+                            return playAudio(animalName: animalName);
+                          },
+                          onLongPress: () {
+                            if (Platform.isAndroid || Platform.isIOS) {
+                              return playMobileAudio(animalName: animalName);
+                            }
+                            return playAudio(animalName: animalName);
+                          },
+                        ),
+                      ),
+                    )
+                  ],
+                );
+              },
+            ),
+          );
+        },
       ),
     );
   }
