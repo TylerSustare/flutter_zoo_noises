@@ -121,7 +121,13 @@ class HomePage extends StatelessWidget {
                   children: [
                     ListTile(
                       title: Text(animalName.toUpperCase()),
-                      trailing: Text(animalName[0].toUpperCase()),
+                      trailing: Text(
+                        animalName[0].toUpperCase(),
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                     SizedBox(
                       height: orientation == Orientation.portrait ? 220 : 300,
