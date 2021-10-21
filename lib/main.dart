@@ -1,10 +1,10 @@
-import 'dart:io';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:home_indicator/home_indicator.dart';
-import 'package:zoo_noises/animals.dart';
-import 'package:zoo_noises/colors.dart';
+import 'animals.dart';
+import 'colors.dart';
+import 'audio.dart';
 
 void main() {
   runApp(MyApp());
@@ -19,6 +19,8 @@ class _MyAppState extends State<MyApp> {
   String _title = 'Zoo Noises';
   MaterialColor _color = getColor();
   List<Animal> _animals = Animals.getAnimals();
+  int _secretCount = 0;
+  bool _secretMode = false;
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +38,13 @@ class _MyAppState extends State<MyApp> {
         ),
         setColor: () => setState(() => _color = getColor(_color)),
         title: _title,
+        setSecretCount: () => setState(() {
+          _secretCount = _secretCount + 1;
+          if (_secretCount >= 10) {
+            _secretMode = true;
+          }
+        }),
+        secretMode: _secretMode,
       ),
     );
   }
@@ -50,6 +59,8 @@ class HomePage extends StatelessWidget {
     required this.mixUpAnimals,
     required this.setColor,
     required this.title,
+    required this.secretMode,
+    required this.setSecretCount,
   }) : super(key: key);
 
   final List<Animal> animals;
@@ -57,36 +68,46 @@ class HomePage extends StatelessWidget {
   final void Function() resetAnimals;
   final void Function() mixUpAnimals;
   final void Function() setColor;
+  final void Function() setSecretCount;
+  final bool secretMode;
   final String title;
+
+  void _enableSecretMode(FToast fToast) {
+    if (secretMode) {
+      _showToast(fToast);
+    }
+  }
+
+  void _showToast(FToast fToast) {
+    Widget toast = Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25.0),
+        color: Colors.greenAccent,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.check),
+          SizedBox(
+            width: 12.0,
+          ),
+          Text("You have enabled super secret mode"),
+        ],
+      ),
+    );
+
+    fToast.showToast(
+      child: toast,
+      gravity: ToastGravity.BOTTOM,
+      toastDuration: Duration(seconds: 2),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    void playMobileAudio({required String animalName}) {
-      if (animalName.contains('dragon')) {
-        var file = File('audio/dragon.mp3');
-        AudioCache().play(file.path);
-        return;
-      }
-      var file = File('audio/$animalName.mp3');
-      AudioCache().play(file.path);
-    }
-
-    void playAudio({required String animalName}) {
-      if (animalName.contains('dragon')) {
-        var file = File('audio/dragon.mp3');
-        AudioPlayer().play(file.path, isLocal: true);
-        return;
-      }
-      var file = File('audio/$animalName.mp3');
-      AudioPlayer().play(file.path, isLocal: true);
-    }
-
-    void play({required String animalName}) {
-      if (Platform.isAndroid || Platform.isIOS) {
-        return playMobileAudio(animalName: animalName);
-      }
-      return playAudio(animalName: animalName);
-    }
+    final fToast = FToast();
+    fToast.init(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -106,7 +127,10 @@ class HomePage extends StatelessWidget {
         ),
         title: GestureDetector(
           child: Text(title),
-          onTap: () {},
+          onDoubleTap: () {
+            setSecretCount();
+            _enableSecretMode(fToast);
+          },
         ),
         centerTitle: true,
       ),
@@ -130,6 +154,7 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
+                      key: Key(animalName),
                       height: orientation == Orientation.portrait ? 220 : 300,
                       width: double.infinity,
                       child: Ink(
@@ -141,9 +166,10 @@ class HomePage extends StatelessWidget {
                         child: InkWell(
                           splashColor: getColor(),
                           splashFactory: InkSplash.splashFactory,
-                          onTap: () => play(animalName: animalName),
-                          onDoubleTap: () => play(animalName: animalName),
-                          onLongPress: () => play(animalName: animalName),
+                          onTap: () => Audio.play(animalName: animalName),
+                          onDoubleTap: secretMode
+                              ? () => Audio.play(animalName: animalName)
+                              : null,
                         ),
                       ),
                     )
