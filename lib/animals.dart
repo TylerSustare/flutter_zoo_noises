@@ -4,8 +4,8 @@ class Animal {
 }
 
 class Animals {
-  static List<Animal> getAnimals() {
-    return [
+  static List<Animal> getAnimals({bool secretMode = false}) {
+    var animals = [
       Animal(name: 'anteater'),
       Animal(name: 'antelope'),
       Animal(name: 'bear'),
@@ -15,8 +15,6 @@ class Animals {
       Animal(name: 'cougar'),
       Animal(name: 'dog'),
       Animal(name: 'dolphin'),
-      // Animal(name: 'dragon'),
-      // Animal(name: 'dragon_2'),
       Animal(name: 'eagle'),
       Animal(name: 'elephant'),
       Animal(name: 'falcon'),
@@ -40,10 +38,14 @@ class Animals {
       Animal(name: 'wolf'),
       Animal(name: 'zebra'),
     ];
+    if (secretMode) {
+      animals.addAll([Animal(name: 'dragon'), Animal(name: 'dragon_2')]);
+    }
+    return animals;
   }
 
-  static List<Animal> getRandomAnimals() {
-    var animals = getAnimals();
+  static List<Animal> getRandomAnimals({bool secretMode = true}) {
+    var animals = getAnimals(secretMode: secretMode);
     animals.shuffle();
     return animals;
   }

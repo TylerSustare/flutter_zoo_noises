@@ -32,19 +32,21 @@ class _MyAppState extends State<MyApp> {
       home: HomePage(
         animals: _animals,
         color: _color,
-        resetAnimals: () => setState(() => _animals = Animals.getAnimals()),
-        mixUpAnimals: () => setState(
-          () => _animals = Animals.getRandomAnimals(),
-        ),
-        setColor: () => setState(() => _color = getColor(_color)),
         title: _title,
+        secretMode: _secretMode,
+        resetAnimals: () => setState(() {
+          _animals = Animals.getAnimals(secretMode: _secretMode);
+        }),
+        mixUpAnimals: () => setState(() {
+          _animals = Animals.getRandomAnimals(secretMode: _secretMode);
+        }),
         setSecretCount: () => setState(() {
           _secretCount = _secretCount + 1;
           if (_secretCount >= 10) {
             _secretMode = true;
           }
         }),
-        secretMode: _secretMode,
+        setColor: () => setState(() => _color = getColor(_color)),
       ),
     );
   }
@@ -104,6 +106,17 @@ class HomePage extends StatelessWidget {
     );
   }
 
+  double _getHeight({
+    required String animal,
+    required Orientation orientation,
+  }) {
+    double height = orientation == Orientation.portrait ? 220 : 300;
+    if (animal == 'dragon_2') {
+      return height * 2;
+    }
+    return height;
+  }
+
   @override
   Widget build(BuildContext context) {
     final fToast = FToast();
@@ -155,7 +168,10 @@ class HomePage extends StatelessWidget {
                     ),
                     SizedBox(
                       key: Key(animalName),
-                      height: orientation == Orientation.portrait ? 220 : 300,
+                      height: _getHeight(
+                        animal: animalName,
+                        orientation: orientation,
+                      ),
                       width: double.infinity,
                       child: Ink(
                         decoration: BoxDecoration(
