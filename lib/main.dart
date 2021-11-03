@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:confetti/confetti.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -21,6 +24,21 @@ class _MyAppState extends State<MyApp> {
   List<Animal> _animals = Animals.getAnimals();
   int _secretCount = 0;
   bool _secretMode = false;
+  late ConfettiController _confettiController;
+
+  @override
+  void initState() {
+    super.initState();
+    _confettiController = ConfettiController(
+      duration: const Duration(milliseconds: 200),
+    );
+  }
+
+  @override
+  void dispose() {
+    _confettiController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +52,7 @@ class _MyAppState extends State<MyApp> {
         color: _color,
         title: _title,
         secretMode: _secretMode,
+        confettiController: _confettiController,
         resetAnimals: () => setState(() {
           _animals = Animals.getAnimals(secretMode: _secretMode);
         }),
@@ -63,6 +82,7 @@ class HomePage extends StatelessWidget {
     required this.title,
     required this.secretMode,
     required this.setSecretCount,
+    required this.confettiController,
   }) : super(key: key);
 
   final List<Animal> animals;
@@ -73,6 +93,36 @@ class HomePage extends StatelessWidget {
   final void Function() setSecretCount;
   final bool secretMode;
   final String title;
+  final ConfettiController confettiController;
+
+  /// A custom Path to paint stars.
+  Path drawStar(Size size) {
+    // convert degree to radians
+    double degToRad(double deg) => deg * (pi / 180.0);
+
+    const numberOfPoints = 5;
+    final halfWidth = size.width / 2;
+    final externalRadius = halfWidth;
+    final internalRadius = halfWidth / 2.5;
+    final degreesPerStep = degToRad(360 / numberOfPoints);
+    final halfDegreesPerStep = degreesPerStep / 2;
+    final path = Path();
+    final fullAngle = degToRad(360);
+    path.moveTo(size.width, halfWidth);
+
+    for (double step = 0; step < fullAngle; step += degreesPerStep) {
+      path.lineTo(
+        halfWidth + externalRadius * cos(step),
+        halfWidth + externalRadius * sin(step),
+      );
+      path.lineTo(
+        halfWidth + internalRadius * cos(step + halfDegreesPerStep),
+        halfWidth + internalRadius * sin(step + halfDegreesPerStep),
+      );
+    }
+    path.close();
+    return path;
+  }
 
   void _enableSecretMode(FToast fToast) {
     if (secretMode) {
@@ -149,50 +199,72 @@ class HomePage extends StatelessWidget {
       ),
       body: OrientationBuilder(
         builder: (context, orientation) {
-          return Center(
-            child: ListView.builder(
-              itemCount: animals.length,
-              itemBuilder: (BuildContext context, int index) {
-                String animalName = animals[index].name;
-                return Column(
-                  children: [
-                    ListTile(
-                      title: Text(animalName.toUpperCase()),
-                      trailing: Text(
-                        animalName[0].toUpperCase(),
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      key: Key(animalName),
-                      height: _getHeight(
-                        animal: animalName,
-                        orientation: orientation,
-                      ),
-                      width: double.infinity,
-                      child: Ink(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('assets/images/$animalName.jpeg'),
+          return Stack(
+            children: [
+              Container(
+                alignment: Alignment.topCenter,
+                child: ConfettiWidget(
+                  confettiController: confettiController,
+                  blastDirectionality:
+                      BlastDirectionality.explosive, // blast randomly
+                  colors: colors, // use our colors
+                  createParticlePath: drawStar,
+                  numberOfParticles: 100,
+                  emissionFrequency: 0, // only blast once
+                  gravity: 0.1,
+                ),
+              ),
+              Center(
+                child: ListView.builder(
+                  itemCount: animals.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    String animalName = animals[index].name;
+                    return Column(
+                      children: [
+                        ListTile(
+                          title: Text(animalName.toUpperCase()),
+                          trailing: Text(
+                            animalName[0].toUpperCase(),
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                        child: InkWell(
-                          splashColor: getColor(),
-                          splashFactory: InkSplash.splashFactory,
-                          onTap: () => Audio.play(animalName: animalName),
-                          onDoubleTap: secretMode
-                              ? () => Audio.play(animalName: animalName)
-                              : null,
+                        SizedBox(
+                          key: Key(animalName),
+                          height: _getHeight(
+                            animal: animalName,
+                            orientation: orientation,
+                          ),
+                          width: double.infinity,
+                          child: Ink(
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage(
+                                    'assets/images/$animalName.jpeg'),
+                              ),
+                            ),
+                            child: InkWell(
+                              splashColor: getColor(),
+                              splashFactory: InkSplash.splashFactory,
+                              onTap: () => Audio.play(animalName: animalName),
+                              onLongPress: () {
+                                confettiController.play();
+                                Audio.play(animalName: animalName);
+                              },
+                              onDoubleTap: secretMode
+                                  ? () => Audio.play(animalName: animalName)
+                                  : null,
+                            ),
+                          ),
                         ),
-                      ),
-                    )
-                  ],
-                );
-              },
-            ),
+                      ],
+                    );
+                  },
+                ),
+              ),
+            ],
           );
         },
       ),
