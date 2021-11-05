@@ -96,7 +96,8 @@ class HomePage extends StatelessWidget {
   final ConfettiController confettiController;
 
   /// A custom Path to paint stars.
-  Path drawStar(Size size) {
+  Path drawStar(Size _size) {
+    Size size = _size * 2;
     // convert degree to radians
     double degToRad(double deg) => deg * (pi / 180.0);
 
@@ -159,8 +160,11 @@ class HomePage extends StatelessWidget {
   double _getHeight({
     required String animal,
     required Orientation orientation,
+    required BuildContext context,
   }) {
-    double height = orientation == Orientation.portrait ? 220 : 300;
+    double height = orientation == Orientation.portrait
+        ? MediaQuery.of(context).size.height / 3.8
+        : MediaQuery.of(context).size.height / 1.2;
     if (animal == 'dragon_2') {
       return height * 2;
     }
@@ -207,11 +211,12 @@ class HomePage extends StatelessWidget {
                   confettiController: confettiController,
                   blastDirectionality:
                       BlastDirectionality.explosive, // blast randomly
-                  colors: colors, // use our colors
+                  colors: colors,
                   createParticlePath: drawStar,
-                  numberOfParticles: 100,
+                  numberOfParticles: 300,
                   emissionFrequency: 0, // only blast once
-                  gravity: 0.1,
+                  gravity: 0.2,
+                  minBlastForce: 7,
                 ),
               ),
               Center(
@@ -222,11 +227,16 @@ class HomePage extends StatelessWidget {
                     return Column(
                       children: [
                         ListTile(
-                          title: Text(animalName.toUpperCase()),
+                          title: Text(
+                            animalName.toUpperCase(),
+                            style: TextStyle(
+                              fontSize: MediaQuery.of(context).size.width / 22,
+                            ),
+                          ),
                           trailing: Text(
                             animalName[0].toUpperCase(),
                             style: TextStyle(
-                              fontSize: 24,
+                              fontSize: MediaQuery.of(context).size.width / 22,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -236,6 +246,7 @@ class HomePage extends StatelessWidget {
                           height: _getHeight(
                             animal: animalName,
                             orientation: orientation,
+                            context: context,
                           ),
                           width: double.infinity,
                           child: Ink(
