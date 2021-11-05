@@ -105,7 +105,7 @@ class HomePage extends StatelessWidget {
     fToast.showToast(
       child: toast,
       gravity: ToastGravity.BOTTOM,
-      toastDuration: Duration(seconds: 2),
+      toastDuration: Duration(seconds: 5),
     );
   }
 
@@ -141,14 +141,10 @@ class HomePage extends StatelessWidget {
       ),
       body: OrientationBuilder(
         builder: (context, orientation) {
-          return Stack(
-            children: [
-              AnimalList(
-                animals: animals,
-                secretMode: secretMode,
-                orientation: orientation,
-              ),
-            ],
+          return AnimalList(
+            animals: animals,
+            secretMode: secretMode,
+            orientation: orientation,
           );
         },
       ),
@@ -219,24 +215,54 @@ class _AnimalCardState extends State<AnimalCard> {
     super.dispose();
   }
 
+  /// A custom Path to paint stars.
+  Path drawStar(Size _size) {
+    Size size = _size * 2;
+    // convert degree to radians
+    double degToRad(double deg) => deg * (pi / 180.0);
+
+    const numberOfPoints = 5;
+    final halfWidth = size.width / 2;
+    final externalRadius = halfWidth;
+    final internalRadius = halfWidth / 2.5;
+    final degreesPerStep = degToRad(360 / numberOfPoints);
+    final halfDegreesPerStep = degreesPerStep / 2;
+    final path = Path();
+    final fullAngle = degToRad(360);
+    path.moveTo(size.width, halfWidth);
+
+    for (double step = 0; step < fullAngle; step += degreesPerStep) {
+      path.lineTo(
+        halfWidth + externalRadius * cos(step),
+        halfWidth + externalRadius * sin(step),
+      );
+      path.lineTo(
+        halfWidth + internalRadius * cos(step + halfDegreesPerStep),
+        halfWidth + internalRadius * sin(step + halfDegreesPerStep),
+      );
+    }
+    path.close();
+    return path;
+  }
+
+  double _getHeight({
+    required String animal,
+    required Orientation orientation,
+    required BuildContext context,
+  }) {
+    double height = orientation == Orientation.portrait
+        ? MediaQuery.of(context).size.height / 3.8
+        : MediaQuery.of(context).size.height / 1.2;
+    if (animal == 'dragon_2') {
+      return height * 2;
+    }
+    return height;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          alignment: Alignment.center,
-          child: ConfettiWidget(
-            confettiController: confettiController,
-            blastDirectionality:
-                BlastDirectionality.explosive, // blast randomly
-            colors: colors,
-            createParticlePath: drawStar,
-            numberOfParticles: 100,
-            emissionFrequency: 0, // only blast once
-            gravity: 0.2,
-            minBlastForce: 7,
-          ),
-        ),
         ListTile(
           title: Text(
             widget.animalName.toUpperCase(),
@@ -260,71 +286,46 @@ class _AnimalCardState extends State<AnimalCard> {
             context: context,
           ),
           width: double.infinity,
-          child: Ink(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/${widget.animalName}.jpeg'),
+          child: Stack(
+            children: [
+              Container(
+                alignment: Alignment.center,
+                child: ConfettiWidget(
+                  confettiController: confettiController,
+                  blastDirectionality:
+                      BlastDirectionality.explosive, // blast randomly
+                  colors: colors,
+                  createParticlePath: drawStar,
+                  numberOfParticles: 100,
+                  emissionFrequency: 0, // only blast once
+                  gravity: 0.2,
+                  minBlastForce: 7,
+                ),
               ),
-            ),
-            child: InkWell(
-              splashColor: getColor(),
-              splashFactory: InkSplash.splashFactory,
-              onTap: () => Audio.play(animalName: widget.animalName),
-              onLongPress: () {
-                confettiController.play();
-                Audio.play(animalName: widget.animalName);
-              },
-              onDoubleTap: widget.secretMode
-                  ? () => Audio.play(animalName: widget.animalName)
-                  : null,
-            ),
+              Ink(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image:
+                        AssetImage('assets/images/${widget.animalName}.jpeg'),
+                  ),
+                ),
+                child: InkWell(
+                  splashColor: getColor(),
+                  splashFactory: InkSplash.splashFactory,
+                  onTap: () => Audio.play(animalName: widget.animalName),
+                  onLongPress: () {
+                    confettiController.play();
+                    Audio.play(animalName: widget.animalName);
+                  },
+                  onDoubleTap: widget.secretMode
+                      ? () => Audio.play(animalName: widget.animalName)
+                      : null,
+                ),
+              ),
+            ],
           ),
         ),
       ],
     );
   }
-}
-
-double _getHeight({
-  required String animal,
-  required Orientation orientation,
-  required BuildContext context,
-}) {
-  double height = orientation == Orientation.portrait
-      ? MediaQuery.of(context).size.height / 3.8
-      : MediaQuery.of(context).size.height / 1.2;
-  if (animal == 'dragon_2') {
-    return height * 2;
-  }
-  return height;
-}
-
-/// A custom Path to paint stars.
-Path drawStar(Size _size) {
-  Size size = _size * 2;
-  // convert degree to radians
-  double degToRad(double deg) => deg * (pi / 180.0);
-
-  const numberOfPoints = 5;
-  final halfWidth = size.width / 2;
-  final externalRadius = halfWidth;
-  final internalRadius = halfWidth / 2.5;
-  final degreesPerStep = degToRad(360 / numberOfPoints);
-  final halfDegreesPerStep = degreesPerStep / 2;
-  final path = Path();
-  final fullAngle = degToRad(360);
-  path.moveTo(size.width, halfWidth);
-
-  for (double step = 0; step < fullAngle; step += degreesPerStep) {
-    path.lineTo(
-      halfWidth + externalRadius * cos(step),
-      halfWidth + externalRadius * sin(step),
-    );
-    path.lineTo(
-      halfWidth + internalRadius * cos(step + halfDegreesPerStep),
-      halfWidth + internalRadius * sin(step + halfDegreesPerStep),
-    );
-  }
-  path.close();
-  return path;
 }
